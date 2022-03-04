@@ -176,6 +176,26 @@ kubectl -n mynamespace run test5 --image nginx
 
 ![](image/README/week20_03.png)
 
+Use k for kubectl?
+
+Use `describe` to check details -
+
+```
+k describe pods test3-... -n mynamespace
+```
+
+```
+docker commit ... ...
+```
+
+If can't find pod logs, try to find the docker logs.
+
+i.e. use `docker cp ...` to copy the log out.
+
+0/1 means this pod has 1 container and 0 container is ready.
+
+There are many reasons can cause "ImagePullBackOff" error.
+
 ## Week 4/21, 2022-03-03
 
 ???
