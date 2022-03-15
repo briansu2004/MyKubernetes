@@ -430,7 +430,168 @@ If you receive the "Back-Off restarting failed container" output message, then y
 
 ## Week 5/22, 2022-03-10
 
-???
+https://docs.google.com/forms/d/e/1FAIpQLSeWGy3yW3glJkfVW0aVnRrR8WpqBXxKYNIss9PoJUK9t1IG0g/viewform?vc=0&c=0&w=1&flr=0
+
+->
+
+https://docs.google.com/forms/d/e/1FAIpQLSeWGy3yW3glJkfVW0aVnRrR8WpqBXxKYNIss9PoJUK9t1IG0g/viewscore?viewscore=AE0zAgBjzGDAKoJOiwXULSYJ2U6gpGn9a4wkw5wORl0AgeR2nrYIm86B1A88V0iK6hqX-ro
+
+YAML excels at working with mappings (hashes / dictionaries), sequences (arrays / lists), and scalars (strings / numbers)
+
+Overview of data types in YAML
+
+- Integers.
+- Floating point.
+- String.
+- Null.
+- Timestamp.
+- Arrays or List.
+
+The command below will initialise the cluster with a known token to simplify the following steps.
+
+```
+kubeadm init --token=102952.1a7dd4cc8d1f4cc5 --kubernetes-version $(kubeadm version -o short)
+```
+
+In production, it's recommend to exclude the token causing kubeadm to generate one on your behalf.
+
+To manage the Kubernetes cluster, the client configuration and certificates are required. This configuration is created when kubeadm initialises the cluster. The command copies the configuration to the users home directory and sets the environment variable for use with the CLI.
+
+```
+sudo cp /etc/kubernetes/admin.conf $HOME/
+sudo chown $(id -u):$(id -g) $HOME/admin.conf
+export KUBECONFIG=$HOME/admin.conf
+```
+
+ReplicaSets
+
+```
+kubectl get rs -n mynamespace
+```
+
+set the current namespace
+
+```
+kubectl config set-context --current --namespace=mynamespace
+```
+
+Delete a replica set
+
+```
+controlplane $ k get rs
+NAME               DESIRED   CURRENT   READY   AGE
+test1-7687c59456   1         1         1       24m
+test4-6dc9786c67   1         1         0       24m
+test5-7bbb9467f5   1         1         0       24m
+test6-dc4f8cf6d    1         1         0       24m
+test7-8576567f89   3         3         3       24m
+test8-7f64d968b8   1         1         0       24m
+controlplane $ k delete rs test7-8576567f89
+replicaset.extensions "test7-8576567f89" deleted
+controlplane $ k get rs
+NAME               DESIRED   CURRENT   READY   AGE
+test1-7687c59456   1         1         1       24m
+test4-6dc9786c67   1         1         0       24m
+test5-7bbb9467f5   1         1         0       24m
+test6-dc4f8cf6d    1         1         0       24m
+test7-8576567f89   3         3         0       4s
+test8-7f64d968b8   1         1         0       24m
+```
+
+test9-pod.yaml
+
+```
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: test9
+  namespace: mynamespace
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      tier: frontend
+  template:
+    metadata:
+      labels:
+        tier: frontend
+    spec:
+      containers:
+      - name: nginx
+        image: nginx
+```
+
+test10-pod.yaml
+
+```
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: test10
+  namespace: mynamespace
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      tier: frontend
+  template:
+    metadata:
+      labels:
+        tier: frontend
+    spec:
+      containers:
+      - name: nginx
+        image: nginx
+```
+
+new test9-pod.yaml
+
+```
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: test9
+  namespace: mynamespace
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      tier: frontend
+  template:
+    metadata:
+      labels:
+        tier: frontend
+    spec:
+      containers:
+      - name: redis
+        image: redis
+```
+
+kubectl create deployment test9 --image=nginx -n mynamespace
+
+kubectl create deployment test10 --image=nginx -n mynamespace
+
+kubectl replace -f test9-pod.yaml
+
+kubectl scale deployment test10 --replicas=5 -n mynamespace
+
+![](image/README/20220310_01.png)
+
+![](image/README/20220310_02.png)
+
+![](image/README/20220310_03.png)
+
+![](image/README/20220310_04.png)
+
+![](image/README/20220310_05.png)
+
+## Week 6/22, 2022-03-17
+
+?
+
+->
+
+?
 
 ## Week?/??, 2022-0x-xx
 
