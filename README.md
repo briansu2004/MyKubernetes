@@ -585,6 +585,14 @@ kubectl scale deployment test10 --replicas=5 -n mynamespace
 
 ![](image/README/20220310_05.png)
 
+```
+alias k=kubectl
+
+k get rs <rs_name> -o yaml
+```
+
+apply is better than create and replace.
+
 ## Week 6/22, 2022-03-17
 
 ?
@@ -601,6 +609,6 @@ https://docs.google.com/forms/d/e/1FAIpQLSeSrGJTolsj2dO8Q-Xu0uKn1QW3Dr9QHw0vVEjh
 
 https://docs.google.com/forms/d/e/1FAIpQLSeSrGJTolsj2dO8Q-Xu0uKn1QW3Dr9QHw0vVEjhxTa-sWsLiA/viewscore?viewscore=AE0zAgBLjjH1i67JJiUBIuaqLGzzgkAsGQe8dpkWMo_Qk5dZBzzfw3VER7ixsYmigHiGw0s
 
-![](image/README/20220217_01.png)
+![](image/README/20220xxx_01.png)
 
 ## Ref
