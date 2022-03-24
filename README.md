@@ -12,6 +12,14 @@ Attendance
 
 https://docs.google.com/spreadsheets/d/1ycnDY6OF1UFTYxSq2lWlQo0y-g6Ozko1KRAQysBQOPg/edit#gid=0
 
+```
+alias k=kubectl
+```
+
+```
+kubectl config set-context --current --namespace=mynamespace
+```
+
 ## Week 1/18, 2022-02-10
 
 https://docs.google.com/forms/d/e/1FAIpQLScBSHWlre-Zl5uEx5SpWQftefvQt_sJhFWvQvV2LOeoZrEJ3Q/viewform?vc=0&c=0&w=1&flr=0
@@ -593,7 +601,89 @@ k get rs <rs_name> -o yaml
 
 apply is better than create and replace.
 
-## Week 6/22, 2022-03-17
+## Week 6/23, 2022-03-17
+
+https://docs.google.com/forms/d/e/1FAIpQLScmMc78Y6j3gkPUgColBivq6GPWmupVko0OWqn3tXmBzP92jA/viewform?vc=0&c=0&w=1&flr=0
+
+->
+
+https://docs.google.com/forms/d/e/1FAIpQLScmMc78Y6j3gkPUgColBivq6GPWmupVko0OWqn3tXmBzP92jA/viewscore?viewscore=AE0zAgCIFqPo5RENLUVewDSFKR_g3SCy2sYSt7YsWelmBspRdOgMTityZlWM778Ad133uSM
+
+```
+apiVersion: v1
+kind: Service
+metadata:
+  name: service-test1
+  namespace: mynamespace
+spec:
+  type: NodePort
+  ports:
+    - targetPort: 80
+      port: 80
+      nodePort: 30008
+  selector:
+    run: service-test1
+```
+
+```
+kubectl apply -f service-test1.yaml -n mynamespace
+```
+
+```
+kubectl get rs test7-f54cbd95b -o yaml
+```
+
+```
+kubectl create service nodeport test8 --tcp=80:80
+```
+
+```
+controlplane $ kubectl create service nodeport test8 --tcp=80:80 -n mynamespace
+service/test8 created
+controlplane $ k get service
+NAME            TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)        AGE
+service-test1   NodePort    10.97.247.103   <none>        80:30008/TCP   27m
+test3           ClusterIP   10.103.254.46   <none>        80/TCP         31m
+test8           NodePort    10.102.76.75    <none>        80:30587/TCP   7s
+```
+
+```
+controlplane $ kubectl -n mynamespace expose deployment test8 --type=NodePort --port=80 --target-port=80
+service/test8 exposed
+controlplane $ k get service
+NAME            TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)        AGE
+service-test1   NodePort    10.97.247.103   <none>        80:30008/TCP   33m
+test3           ClusterIP   10.103.254.46   <none>        80/TCP         37m
+test8           NodePort    10.104.227.54   <none>        80:30884/TCP   16s
+```
+
+```
+controlplane $ k get service test3
+NAME    TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)   AGE
+test3   ClusterIP   10.103.254.46   <none>        80/TCP    32m
+controlplane $ k describe service test3
+Name:              test3
+Namespace:         mynamespace
+Labels:            run=test3
+                   type=ssd
+Annotations:       <none>
+Selector:          run=test3,type=ssd
+Type:              ClusterIP
+IP:                10.103.254.46
+Port:              <unset>  80/TCP
+TargetPort:        6379/TCP
+Endpoints:         10.244.1.5:6379
+Session Affinity:  None
+Events:            <none>
+```
+
+![](image/README/20220317_01.png)
+
+![](image/README/20220317_02.png)
+
+![](image/README/20220317_03.png)
+
+## Week 7/24, 2022-03-24
 
 ?
 
@@ -601,7 +691,7 @@ apply is better than create and replace.
 
 ?
 
-## Week?/??, 2022-0x-xx
+## Week x/xx, 2022-0x-xx
 
 https://docs.google.com/forms/d/e/1FAIpQLSeSrGJTolsj2dO8Q-Xu0uKn1QW3Dr9QHw0vVEjhxTa-sWsLiA/viewform?vc=0&c=0&w=1&flr=0
 
