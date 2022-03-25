@@ -683,6 +683,42 @@ Events:            <none>
 
 ![](image/README/20220317_03.png)
 
+`service`
+
+load balance
+
+kube-proxy
+
+kube api server
+
+iptable
+
+`service type`
+
+3 types
+
+- cluster IP
+- node port
+  port on the cluster
+- load balancer
+  assign a (virtual) IP for external network to visit
+
+node port can be assigned a random point if not provided (>30000)
+
+`kubectl get ep`
+
+ep : end point
+svc : service
+rs : replicaset
+
+NodePort -> Node + Port
+
+metallb
+
+MetalLB is a load-balancer implementation for bare metal Kubernetes clusters, using standard routing protocols.
+
+HairPin mode
+
 ## Week 7/24, 2022-03-24
 
 ?
