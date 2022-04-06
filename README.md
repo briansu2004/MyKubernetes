@@ -815,6 +815,49 @@ spec:
 
 ## Week 8/25, 2022-03-31
 
+https://docs.google.com/forms/d/e/1FAIpQLScsGcNifFluAdALLzgK2NdEpQfk6tb0kldFIIt9hsoAZ6x-uw/viewform?vc=0&c=0&w=1&flr=0
+
+->
+
+https://docs.google.com/forms/d/e/1FAIpQLScsGcNifFluAdALLzgK2NdEpQfk6tb0kldFIIt9hsoAZ6x-uw/viewscore?viewscore=AE0zAgCRyWF2HBlnvmuJB8eqn4quecwBFBjm-Wh6VyJolbvAfEzoXoDbVo-ANV3YPfoqqAU
+
+StatefulSet 类似于 ReplicaSet ，但是它可以处理 Pod 的启动顺序，为保留每个 Pod 的状态设置唯一标识，具有以下几个功能特性：
+
+- 稳定的、唯一的网络标识符
+- 稳定的、持久化的存储
+- 有序的、优雅的部署和缩放
+- 有序的、优雅的删除和终止
+- 有序的、自动滚动更新
+
+`kubectl get ns`
+
+`kubectl get rs -n mynamespace`
+
+`kubectl create namespace dev`
+
+`kubectl run redis-test --image=redis:alpine --labels=tier=db -n dev`
+
+`kubectl get pods -n prod`
+
+`servicename.namespacename.svc.cluster.local`
+
+`kubectl run httpd --image=httpd:alpine -n default`
+
+`kubectl expose deployment httpd --type=ClusterIP --port=80`
+
+kubectl run httpd --image=httpd:alpine -n default --port 80 --expose
+kubectl run httpd --image=httpd:alpine --port 80 --expose
+
+kubectl run redis-test2 --image=redis:alpine -l tier=db -n dev
+
+![](image/README/20220331_01.png)
+
+![](image/README/20220331_02.png)
+
+![](image/README/20220331_03.png)
+
+## Week 9/26, 2022-04-07
+
 ?
 
 ->
