@@ -858,6 +858,55 @@ kubectl run redis-test2 --image=redis:alpine -l tier=db -n dev
 
 ## Week 9/26, 2022-04-07
 
+https://docs.google.com/forms/d/e/1FAIpQLSfFgs7bSIDU5yFLgNQHHAlfDGDN6kPdIjP72vxomH0I-_WUnQ/viewform?vc=0&c=0&w=1&flr=0
+
+->
+
+https://docs.google.com/forms/d/e/1FAIpQLSfFgs7bSIDU5yFLgNQHHAlfDGDN6kPdIjP72vxomH0I-_WUnQ/viewscore?viewscore=AE0zAgCwM8bA-lIpCOeLn9ZfAW5_gqlwnnWvl2dBrQwQDYlDfkNBFRc21iZepCwNHaHATJw
+
+Deployment 部署的副本 Pod 会分布在各个 Node 上，每个 Node 都可能运行好几个副本。DaemonSet 的不同之处在于：每个 Node 上最多只能运行一个副本。
+
+DaemonSet 的典型应用场景有：
+
+- 在集群的每个节点上运行存储 Daemon，比如 glusterd 或 ceph。
+- 在每个节点上运行日志收集 Daemon，比如 flunentd 或 logstash。
+- 在每个节点上运行监控 Daemon，比如 Prometheus Node Exporter 或 collectd。
+
+- 网络 daemon，用于处理这个节点上的容器网络，如 flannel 等；
+- 集群存储 daemon，用于在这个节点上挂载远程存储目录；
+- 监控 daemon，负责这个节点上的监控信息，如 node exporter 等；
+- 日志收集 daemon，负责这个节点上的日志搜集，如 fluentd、logstash 等。
+
+其实 Kubernetes 自己就在用 DaemonSet 运行系统组件。
+
+执行如下命令
+
+`kubectl get daemonset --namespace=kube-system`
+
+- DaemonSet 配置文件的语法和结构与 Deployment 几乎完全一样，只是将 kind 设为 DaemonSet。
+- hostNetwork 指定 Pod 直接使用的是 Node 的网络，相当于 `docker run --network=host` 考虑到 flannel 需要为集群提供网络连接，这个要求是合理的。
+- containers 定义了运行 flannel 服务的两个容器。
+
+您可以使用命令 kubectl taint 给节点增加一个污点
+
+相比于 Deployment，DaemonSet 只管理 Pod 对象，然后通过 nodeAffinity 和 Toleration 这两个调度器的小功能，保证了每个节点上有且只有一个 Pod
+
+Deployment、StatefulSet 和 DaemonSet 这三个编排概念编排的对象主要都是在线业务（Long Running Task，这些应用一旦运行起来，除非出错或者停止，它的容器进程会一直保持在 Running 状态）。
+
+但是对于离线业务（Batch Job，计算业务）在计算完成后就直接退出了，如果依然使用 Deployment 来管理，就会发现 Pod 会在计算结束后退出，然后被 Deployment Controller 不断重启。
+
+在 Kubernetes v1.4 版本之后，设计出来一个用来描述离线业务的 API 对象：Job。
+
+![](image/README/20220407_01.png)
+
+![](image/README/20220407_02.png)
+
+![](image/README/20220407_03.png)
+
+![](image/README/20220407_04.png)
+
+## Week 9/26, 2022-04-07
+
 ?
 
 ->
