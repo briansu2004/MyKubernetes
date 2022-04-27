@@ -905,7 +905,370 @@ Deployment、StatefulSet 和 DaemonSet 这三个编排概念编排的对象主�
 
 ![](image/README/20220407_04.png)
 
-## Week 9/26, 2022-04-07
+## 2021-04-14 (no class)
+
+## Week 10/27, 2022-04-21
+
+https://docs.google.com/forms/d/e/1FAIpQLScjfZuAsD21KOwDOKjZzmZZrFkBL9yeUV9k6gk3d7MIwQZIUQ/viewform?vc=0&c=0&w=1&flr=0
+
+->
+
+https://docs.google.com/forms/d/e/1FAIpQLScjfZuAsD21KOwDOKjZzmZZrFkBL9yeUV9k6gk3d7MIwQZIUQ/viewscore?viewscore=AE0zAgAzd1XYvJfzFPPDhrMuEKmflGWglJ36CRxBXX-CTsbopB9co3ks8sdruFkyy9fv5xY
+
+```
+kubeadm token create  --print-join-command
+kubectl explain pods --recursive
+kubectl -n mynamespace get pod ubuntu-sleeper -o yaml
+kubectl apply -f ubuntu-sleeper-1.yaml
+kubectl get configmaps
+kubectl get cm
+kubectl apply -f webapp-color.yaml
+```
+
+`kubectl -n mynamespace get pod ubuntu-sleeper -o yaml`
+
+```
+apiVersion: v1
+kind: Pod
+metadata:
+  annotations:
+    kubectl.kubernetes.io/last-applied-configuration: |
+      {"apiVersion":"v1","kind":"Pod","metadata":{"annotations":{},"name":"ubuntu-sleeper","namespace":"mynamespace"},"spec":{"containers":[{"args":["5000"],"command":["sleep"],"image":"ubuntu","name":"ubuntu-sleeper"}]}}
+  creationTimestamp: "2022-04-27T13:10:53Z"
+  managedFields:
+  - apiVersion: v1
+    fieldsType: FieldsV1
+    fieldsV1:
+      f:metadata:
+        f:annotations:
+          .: {}
+          f:kubectl.kubernetes.io/last-applied-configuration: {}
+      f:spec:
+        f:containers:
+          k:{"name":"ubuntu-sleeper"}:
+            .: {}
+            f:args: {}
+            f:command: {}
+            f:image: {}
+            f:imagePullPolicy: {}
+            f:name: {}
+            f:resources: {}
+            f:terminationMessagePath: {}
+            f:terminationMessagePolicy: {}
+        f:dnsPolicy: {}
+        f:enableServiceLinks: {}
+        f:restartPolicy: {}
+        f:schedulerName: {}
+        f:securityContext: {}
+        f:terminationGracePeriodSeconds: {}
+    manager: kubectl
+    operation: Update
+    time: "2022-04-27T13:10:53Z"
+  - apiVersion: v1
+    fieldsType: FieldsV1
+    fieldsV1:
+      f:status:
+        f:conditions:
+          k:{"type":"ContainersReady"}:
+            .: {}
+            f:lastProbeTime: {}
+            f:lastTransitionTime: {}
+            f:status: {}
+            f:type: {}
+          k:{"type":"Initialized"}:
+            .: {}
+            f:lastProbeTime: {}
+            f:lastTransitionTime: {}
+            f:status: {}
+            f:type: {}
+          k:{"type":"Ready"}:
+            .: {}
+            f:lastProbeTime: {}
+            f:lastTransitionTime: {}
+            f:status: {}
+            f:type: {}
+        f:containerStatuses: {}
+        f:hostIP: {}
+        f:phase: {}
+        f:podIP: {}
+        f:podIPs:
+          .: {}
+          k:{"ip":"10.244.1.3"}:
+            .: {}
+            f:ip: {}
+        f:startTime: {}
+    manager: kubelet
+    operation: Update
+    time: "2022-04-27T13:11:00Z"
+  name: ubuntu-sleeper
+  namespace: mynamespace
+  resourceVersion: "1695"
+  selfLink: /api/v1/namespaces/mynamespace/pods/ubuntu-sleeper
+  uid: c9c9f2f6-12cd-4564-9db1-fd2c2d38e66f
+spec:
+  containers:
+  - args:
+    - "5000"
+    command:
+    - sleep
+    image: ubuntu
+    imagePullPolicy: Always
+    name: ubuntu-sleeper
+    resources: {}
+    terminationMessagePath: /dev/termination-log
+    terminationMessagePolicy: File
+    volumeMounts:
+    - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+      name: default-token-tgxfz
+      readOnly: true
+  dnsPolicy: ClusterFirst
+  enableServiceLinks: true
+  nodeName: node01
+  priority: 0
+  restartPolicy: Always
+  schedulerName: default-scheduler
+  securityContext: {}
+  serviceAccount: default
+  serviceAccountName: default
+  terminationGracePeriodSeconds: 30
+  tolerations:
+  - effect: NoExecute
+    key: node.kubernetes.io/not-ready
+    operator: Exists
+    tolerationSeconds: 300
+  - effect: NoExecute
+    key: node.kubernetes.io/unreachable
+    operator: Exists
+    tolerationSeconds: 300
+  volumes:
+  - name: default-token-tgxfz
+    secret:
+      defaultMode: 420
+      secretName: default-token-tgxfz
+status:
+  conditions:
+  - lastProbeTime: null
+    lastTransitionTime: "2022-04-27T13:10:52Z"
+    status: "True"
+    type: Initialized
+  - lastProbeTime: null
+    lastTransitionTime: "2022-04-27T13:11:00Z"
+    status: "True"
+    type: Ready
+  - lastProbeTime: null
+    lastTransitionTime: "2022-04-27T13:11:00Z"
+    status: "True"
+    type: ContainersReady
+  - lastProbeTime: null
+    lastTransitionTime: "2022-04-27T13:10:53Z"
+    status: "True"
+    type: PodScheduled
+  containerStatuses:
+  - containerID: docker://fbb11a3e2096ee04ac809379bbb887fc5537b6c27aee184aa86a61a11975a0aa
+    image: ubuntu:latest
+    imageID: docker-pullable://ubuntu@sha256:2a7dffab37165e8b4f206f61cfd984f8bb279843b070217f6ad310c9c31c9c7c
+    lastState: {}
+    name: ubuntu-sleeper
+    ready: true
+    restartCount: 0
+    started: true
+    state:
+      running:
+        startedAt: "2022-04-27T13:10:59Z"
+  hostIP: 10.0.0.14
+  phase: Running
+  podIP: 10.244.1.3
+  podIPs:
+  - ip: 10.244.1.3
+  qosClass: BestEffort
+  startTime: "2022-04-27T13:10:52Z"
+```
+
+`ubuntu-sleeper-1.yaml`
+
+```
+apiVersion: v1
+kind: Pod
+metadata:
+  name: ubuntu-sleeper-1
+spec:
+  containers:
+  - name: ubuntu
+    image: ubuntu
+    command:
+      - "1200"
+      - sleep
+```
+
+`webapp-color.yaml`
+
+```
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: webapp-config-map
+  namespace: mynamespace
+data:
+  APP_COLOR: darkblue
+```
+
+`webapp-pod.yaml`
+
+```
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    name: webapp-color
+  name: webapp-color
+  namespace: mynamespace
+spec:
+  containers:
+  - image: kodekloud/webapp-color
+    name: webapp-color
+    env:
+      # Define the environment variable
+      - name: APP_COLOR
+        valueFrom:
+          configMapKeyRef:
+            # The ConfigMap containing the value you want to assign to SPECIAL_LEVEL_KEY
+            name: webapp-config-map
+            # Specify the key associated with the value
+            key: APP_COLOR
+```
+
+`kubectl create -f webapp-pod.yaml`
+
+Secrets
+
+```
+# The root password will be "KubernetesRocks!"
+$ echo -n 'KubernetesRocks!' | base64
+S3ViZXJuZXRlc1JvY2tzIQ==
+```
+
+```
+apiVersion: v1
+kind: Secret
+metadata:
+  name: mariadb-root-password
+type: Opaque
+data:
+  password: S3ViZXJuZXRlc1JvY2tzIQ==
+```
+
+```
+$ kubectl apply -f mysql-secret.yaml
+secret/mariadb-root-password created
+```
+
+```
+echo -n 'sql01Secret!' | base64
+echo -n 'rootSecret!' | base64
+echo -n 'password123!' | base64
+```
+
+`db-secret.yaml`
+
+```
+apiVersion: v1
+kind: Secret
+metadata:
+  name: db-secret
+  namespace: mynamespace
+type: Opaque
+data:
+  DB_Host: c3FsMDFTZWNyZXQh
+  DB_User: cm9vdFNlY3JldCE=
+  DB_Password: cGFzc3dvcmQxMjMh
+```
+
+ConfigMaps 和 Pods
+这个 Pod 和 ConfigMap 必须要在同一个名字空间中。
+Note: 静态 Pod 中的 spec 字段不能引用 ConfigMap 或任何其他 API 对象。 这是一个 ConfigMap 的示例，它的一些键只有一个值，其他键的值看起来像是配置的片段格式。
+
+ConfigMap 是一种 API 对象，用来将非机密性的数据保存到键值对中。使用时， Pods 可以将其用作环境变量、命令行参数或者存储卷中的配置文件。
+
+ConfigMap 并不提供保密或者加密功能。 如果你想存储的数据是机密的，请使用 Secret， 或者使用其他第三方工具来保证你的数据的私密性，而不是用 ConfigMap。
+
+动机
+
+使用 ConfigMap 来将你的配置数据和应用程序代码分开。
+
+比如，假设你正在开发一个应用，它可以在你自己的电脑上（用于开发）和在云上 （用于实际流量）运行。 你的代码里有一段是用于查看环境变量 DATABASE_HOST，在本地运行时， 你将这个变量设置为 localhost，在云上，你将其设置为引用 Kubernetes 集群中的 公开数据库组件的 服务。
+
+这让你可以获取在云中运行的容器镜像，并且如果有需要的话，在本地调试完全相同的代码。
+
+ConfigMap 在设计上不是用来保存大量数据的。在 ConfigMap 中保存的数据不可超过 1 MiB。如果你需要保存超出此尺寸限制的数据，你可能希望考虑挂载存储卷 或者使用独立的数据库或者文件服务。
+
+ConfigMap 对象
+
+你可以使用四种方式来使用 ConfigMap 配置 Pod 中的容器：
+
+- 在容器命令和参数内
+- 容器的环境变量
+- 在只读卷里面添加一个文件，让应用来读取
+- 编写代码在 Pod 中运行，使用 Kubernetes API 来读取 ConfigMap
+
+这些不同的方法适用于不同的数据使用方式。 对前三个方法，kubelet 使用 ConfigMap 中的数据在 Pod 中启动容器。
+
+第四种方法意味着你必须编写代码才能读取 ConfigMap 和它的数据。然而， 由于你是直接使用 Kubernetes API，因此只要 ConfigMap 发生更改， 你的应用就能够通过订阅来获取更新，并且在这样的情况发生的时候做出反应。 通过直接进入 Kubernetes API，这个技术也可以让你能够获取到不同的名字空间里的 ConfigMap。
+
+```
+# Create a kustomization.yaml file with ConfigMapGenerator
+cat <<EOF >./kustomization.yaml
+configMapGenerator:
+- name: game-config-5
+  files:
+  - game-special-key=configure-pod-container/configmap/game.properties
+EOF
+```
+
+```
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: game-demo
+data:
+  # 类属性键；每一个键都映射到一个简单的值
+  player_initial_lives: "3"
+  ui_properties_file_name: "user-interface.properties"
+
+  # 类文件键
+  game.properties: |
+    enemy.types=aliens,monsters
+    player.maximum-lives=5
+  user-interface.properties: |
+    color.good=purple
+    color.bad=yellow
+    allow.textmode=true
+```
+
+`kubectl apply -f db-secret.yaml`
+
+![](image/README/20220421_01.png)
+
+![](image/README/20220421_02.png)
+
+![](image/README/20220421_03.png)
+
+![](image/README/20220421_04.png)
+
+```
+kubectl -n mynamespace create cm webapp-config-map --from-literal=APP_COLOR=darkblue
+
+Please refer to week27-20220421-ConfigmapSecrets/labs/8-webapp-config-map.yaml
+
+Please refer to week27-20220421-ConfigmapSecrets/labs/9-webapp-pod.yaml
+
+Please refer to week27-20220421-ConfigmapSecrets/labs/10-db-secret.yaml
+
+kubectl -n mynamespace create secret generic db-secret --from-literal=DB_Host=sql01 --from-literal=DB_User=root --from-literal=DB_Password=password123
+
+Please refer to week27-20220421-ConfigmapSecrets/labs/11-webapp-secret-pod.yaml
+```
+
+## Week 11/28, 2022-04-28
 
 ?
 
