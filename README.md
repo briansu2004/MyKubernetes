@@ -1270,6 +1270,128 @@ Please refer to week27-20220421-ConfigmapSecrets/labs/11-webapp-secret-pod.yaml
 
 ## Week 11/28, 2022-04-28
 
+https://docs.google.com/forms/d/e/1FAIpQLSegHWm09O22LtoM-9sFx_x46L71Jny05qVX-0R-gUv_fLLsbA/viewform?vc=0&c=0&w=1&flr=0
+
+->
+
+https://docs.google.com/forms/d/e/1FAIpQLSegHWm09O22LtoM-9sFx_x46L71Jny05qVX-0R-gUv_fLLsbA/viewscore?viewscore=AE0zAgAv6BIMpuecHD0YTN2bPlBs5TWzGvt01MhAHOQMXmF9DutugkKR4Xvi4DCRGNbMz-g
+
+There are three ways you can create a pod (or resources) in a running k8s cluster.
+
+- Imperative way
+
+```
+$ kubectl run --generator=run-pod/v1 nginx --image=nginx
+pod/nginx created
+```
+
+- Declarative way
+
+```
+$ kubectl create -f simple_deployment.yaml
+deployment.apps/nginx-deployment created
+```
+
+pod_test2_1.yaml
+
+```
+apiVersion: v1
+kind: Pod
+metadata:
+  name: test2
+  namespace: mynamespace
+spec:
+  securityContext:
+    runAsUser: 1010
+  containers:
+  -  image: ubuntu
+     name: test2
+     command: [ "sh","-c","sleep 5000" ]
+```
+
+pod_test2_2.yaml
+
+```
+apiVersion: v1
+kind: Pod
+metadata:
+  name: test2
+  namespace: mynamespace
+spec:
+  containers:
+  - image: nginx
+    name: test2
+    securityContext:
+      capabilities:
+        add: ["SYS_TIME"]
+```
+
+- Using an API interface
+
+```
+kubectl exec -it test1 -n mynamespace -- bash
+```
+
+`kubectl get pods test4 -n mynamespace -o yaml > test4-pod.yaml`
+
+`spec.containers.resources.limits.memory`
+
+```
+kubectl delete pod test4 -n mynamespace
+
+kubectl apply -f test4-pod.yaml
+```
+
+```
+kubectl get sa -n default
+```
+
+```
+controlplane $ kubectl taint nodes node01 spray=morxtein:NoSchedule
+node/node01 tainted
+```
+
+```
+kubectl run test5 --image=nginx -n mynamespace
+kubectl get pods -n mynamespace
+```
+
+test6.yaml
+
+```
+apiVersion: v1
+kind: Pod
+metadata:
+  name: test6
+  namespace: mynamespace
+spec:
+  containers:
+  - name: test6
+    image: nginx
+  tolerations:
+  - key: "spray"
+    value: "mortein"
+    operator: "Equal"
+    effect: "NoSchedule"
+```
+
+```
+kubectl apply -f test6.yaml
+kubectl get pods -n mynamespace
+```
+
+```
+kubectl label node node01 color=blue
+```
+
+![](image/README/20220428_01.png)
+
+![](image/README/20220428_02.png)
+
+![](image/README/20220428_03.png)
+
+## Week 12/29, 2022-05-04
+
 ?
 
 ->
