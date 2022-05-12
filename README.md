@@ -1392,6 +1392,105 @@ kubectl label node node01 color=blue
 
 ## Week 12/29, 2022-05-04
 
+https://docs.google.com/forms/d/e/1FAIpQLSfb1Bxwu535RTFSeH3JglhcydRaEm0mBNApSAC2U1cksMz_Wg/viewform?vc=0&c=0&w=1&flr=0
+
+->
+
+https://docs.google.com/forms/d/e/1FAIpQLSfb1Bxwu535RTFSeH3JglhcydRaEm0mBNApSAC2U1cksMz_Wg/viewscore?viewscore=AE0zAgDnm0Q6HWgaRwLb9yyxGaVLDj8d0LWpI1AjJVAw9dj471QloH7yCuTu60eh1ZT8thM
+
+There are three common design patterns and use-cases for combining multiple containers into a single pod.
+
+- the sidecar pattern
+- the adapter pattern
+- the ambassador pattern
+
+```bash
+cat <<EOF | kubectl apply -f -
+apiVersion: v1
+kind: Pod
+metadata:
+  name: yellow
+  namespace: mynamespace
+spec:
+  containers:
+  - name: lemon
+    image: busybox
+    command: ["sleep", "1000"]
+  - name: gold
+    image: redis
+EOF
+```
+
+```bash
+cat <<EOF | kubectl apply -f - 
+apiVersion: v1
+kind: Pod
+metadata:
+  name: yellow
+  namespace: mynamespace
+spec:
+  containers:
+  - name: lemon
+    image: busybox
+    command: ["sleep", "1000"]
+    volumeMounts:
+    - mountPath: /log
+      name: log-volume
+  - name: gold
+    image: redis
+    volumeMounts:
+    - mountPath: /log
+      name: log-volume
+  volumes:
+  - name: log-volume
+    hostPath:
+      # directory location on host
+      path: /var/log
+      # this field is optional
+      type: DirectoryOrCreate
+EOF
+```
+
+```bash
+cat <<EOF |kubectl apply -f -
+apiVersion: v1
+kind: Pod
+metadata:
+  name: blue
+  namespace: mynamespace
+spec:
+  containers:
+  - image: kodekloud/webapp-delayed-start
+    name: simple-webapp
+    readinessProbe:
+      httpGet:
+        path: /ready
+        port: 8080
+EOF
+```
+
+```bash
+kubectl -n mynamespace get pods -l env=dev
+```
+
+```bash
+git clone https://github.com/kodekloudhub/kubernetes-metrics-server.git
+cd kubernetes-metrics-server
+kubectl create -f .
+kubectl top node
+kubectl -n mynamespace top pod
+```
+
+![](image/README/20220504_01.png)
+
+![](image/README/20220504_02.png)
+
+![](image/README/20220504_03.png)
+
+![](image/README/20220504_04.png)
+
+## Week 13/309, 2022-05-12
+
 ?
 
 ->
