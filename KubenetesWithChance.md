@@ -10,11 +10,11 @@ Attendance
 
 <https://docs.google.com/spreadsheets/d/1ycnDY6OF1UFTYxSq2lWlQo0y-g6Ozko1KRAQysBQOPg/edit#gid=0>
 
-```
+```md
 alias k=kubectl
 ```
 
-```
+```dos
 kubectl config set-context --current --namespace=mynamespace
 ```
 
@@ -82,7 +82,7 @@ Kubernetes Playground
 
 <https://www.katacoda.com/courses/kubernetes/getting-started-with-kubeadm>
 
-```
+```md
 kubeadm init --token=102952.1a7dd4cc8d1f4cc5 --kubernetes-version $(kubeadm version -o short)
 sudo cp /etc/kubernetes/admin.conf $HOME/
 sudo chown $(id -u):$(id -g) $HOME/admin.conf
@@ -105,7 +105,7 @@ What is cluster node and pod?
 
 Cluster. A cluster consists of one master machine and multiple worker machines or nodes. The master coordinates between all the nodes. Pod. A pod is the smallest unit of a cluster.
 
-```
+```md
 controlplane $ kubectl get pods --all-namespaces -o jsonpath="{.items[*].spec.containers[*].image}"
 k8s.gcr.io/coredns:1.3.1
 k8s.gcr.io/coredns:1.3.1
@@ -125,7 +125,7 @@ redis
 redis123
 ```
 
-```
+```md
 controlplane $ kubectl get pods --all-namespaces -o jsonpath='{range .items[*]}{containers[*]}{.image}{", "}{end}{end}' | sort
 
 coredns-fb8b8dccf-8wf72:        k8s.gcr.io/coredns:1.3.1,
@@ -144,7 +144,7 @@ weave-net-h895d:        weaveworks/weave-kube:2.8.1, weaveworks/weave-npc:2.8.1,
 weave-net-s72t6:        weaveworks/weave-kube:2.8.1, weaveworks/weave-npc:2.8.1,
 ```
 
-```
+```shell
 #!/bin/bash
 
 # Deploy Network plugin
@@ -166,13 +166,13 @@ echo ""
 echo ""
 ```
 
-```
+```shell
 kubectl run test5 --image=nginx -n mynamespace
 ```
 
 ???
 
-```
+```shell
 kubectl -n mynamespace run test5 --image nginx
 ```
 
@@ -186,11 +186,11 @@ Use k for kubectl?
 
 Use `describe` to check details -
 
-```
+```shell
 k describe pods test3-... -n mynamespace
 ```
 
-```
+```shell
 docker commit ... ...
 ```
 
@@ -218,7 +218,7 @@ There are many reasons can cause "ImagePullBackOff" error.
 
 setup.sh
 
-```
+```shell
 #!/bin/bash
 
 # Deploy Network plugin
@@ -273,7 +273,7 @@ sleep 15s
 
 Output:
 
-```
+```md
 node01 $ kubeadm join 172.17.0.62:6443 --token o2yjux.2ph5qznlo57qghfk     --discovery-token-ca-cert-hash sha256:f4928f259d5efcb9423adeb4b714e233375236bb445079b260cb90dbda314897
 [preflight] Running pre-flight checks
 [preflight] Reading configuration from the cluster...
@@ -291,8 +291,7 @@ This node has joined the cluster:
 Run 'kubectl get nodes' on the control-plane to see this node join the cluster.
 ```
 
-```
-
+```md
 controlplane $ k describe pods test3 -n mynamespace
 Name:               test3
 Namespace:          mynamespace
@@ -362,7 +361,7 @@ Events:
 controlplane $
 ```
 
-```
+```md
 controlplane $ k describe pods test5-7bbb9467f5-xscnb -n mynamespace
 Name:               test5-7bbb9467f5-xscnb
 Namespace:          mynamespace
@@ -455,7 +454,7 @@ Overview of data types in YAML
 
 The command below will initialise the cluster with a known token to simplify the following steps.
 
-```
+```shell
 kubeadm init --token=102952.1a7dd4cc8d1f4cc5 --kubernetes-version $(kubeadm version -o short)
 ```
 
@@ -463,7 +462,7 @@ In production, it's recommend to exclude the token causing kubeadm to generate o
 
 To manage the Kubernetes cluster, the client configuration and certificates are required. This configuration is created when kubeadm initialises the cluster. The command copies the configuration to the users home directory and sets the environment variable for use with the CLI.
 
-```
+```shell
 sudo cp /etc/kubernetes/admin.conf $HOME/
 sudo chown $(id -u):$(id -g) $HOME/admin.conf
 export KUBECONFIG=$HOME/admin.conf
@@ -471,19 +470,19 @@ export KUBECONFIG=$HOME/admin.conf
 
 ReplicaSets
 
-```
+```shell
 kubectl get rs -n mynamespace
 ```
 
 set the current namespace
 
-```
+```shell
 kubectl config set-context --current --namespace=mynamespace
 ```
 
 Delete a replica set
 
-```
+```md
 controlplane $ k get rs
 NAME               DESIRED   CURRENT   READY   AGE
 test1-7687c59456   1         1         1       24m
@@ -506,7 +505,7 @@ test8-7f64d968b8   1         1         0       24m
 
 test9-pod.yaml
 
-```
+```yml
 apiVersion: apps/v1
 kind: ReplicaSet
 metadata:
@@ -529,7 +528,7 @@ spec:
 
 test10-pod.yaml
 
-```
+```yml
 apiVersion: apps/v1
 kind: ReplicaSet
 metadata:
@@ -552,7 +551,7 @@ spec:
 
 new test9-pod.yaml
 
-```
+```yml
 apiVersion: apps/v1
 kind: ReplicaSet
 metadata:
@@ -591,7 +590,7 @@ kubectl scale deployment test10 --replicas=5 -n mynamespace
 
 ![](image/README/20220310_05.png)
 
-```
+```shell
 alias k=kubectl
 
 k get rs <rs_name> -o yaml
@@ -607,7 +606,7 @@ apply is better than create and replace.
 
 <https://docs.google.com/forms/d/e/1FAIpQLScmMc78Y6j3gkPUgColBivq6GPWmupVko0OWqn3tXmBzP92jA/viewscore?viewscore=AE0zAgCIFqPo5RENLUVewDSFKR_g3SCy2sYSt7YsWelmBspRdOgMTityZlWM778Ad133uSM>
 
-```
+```yml
 apiVersion: v1
 kind: Service
 metadata:
@@ -623,19 +622,19 @@ spec:
     run: service-test1
 ```
 
-```
+```shell
 kubectl apply -f service-test1.yaml -n mynamespace
 ```
 
-```
+```shell
 kubectl get rs test7-f54cbd95b -o yaml
 ```
 
-```
+```shell
 kubectl create service nodeport test8 --tcp=80:80
 ```
 
-```
+```md
 controlplane $ kubectl create service nodeport test8 --tcp=80:80 -n mynamespace
 service/test8 created
 controlplane $ k get service
@@ -645,7 +644,7 @@ test3           ClusterIP   10.103.254.46   <none>        80/TCP         31m
 test8           NodePort    10.102.76.75    <none>        80:30587/TCP   7s
 ```
 
-```
+```md
 controlplane $ kubectl -n mynamespace expose deployment test8 --type=NodePort --port=80 --target-port=80
 service/test8 exposed
 controlplane $ k get service
@@ -655,7 +654,7 @@ test3           ClusterIP   10.103.254.46   <none>        80/TCP         37m
 test8           NodePort    10.104.227.54   <none>        80:30884/TCP   16s
 ```
 
-```
+```md
 controlplane $ k get service test3
 NAME    TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)   AGE
 test3   ClusterIP   10.103.254.46   <none>        80/TCP    32m
@@ -751,7 +750,7 @@ StatefulSet 的核心功能，就是通过某种方式记录这些状态，然�
 
 第二种方式，就是以 Service 的 DNS 方式。比如：这时候，只要我访问“my-svc.my-namespace.svc.cluster.local”这条 DNS 记录，就可以访问到名叫 my-svc 的 Service 所代理的某一个 Pod。
 
-```
+```yml
 apiVersion: v1
 kind: Service
 metadata:
@@ -913,7 +912,7 @@ Deployment、StatefulSet 和 DaemonSet 这三个编排概念编排的对象主�
 
 <https://docs.google.com/forms/d/e/1FAIpQLScjfZuAsD21KOwDOKjZzmZZrFkBL9yeUV9k6gk3d7MIwQZIUQ/viewscore?viewscore=AE0zAgAzd1XYvJfzFPPDhrMuEKmflGWglJ36CRxBXX-CTsbopB9co3ks8sdruFkyy9fv5xY>
 
-```
+```shell
 kubeadm token create  --print-join-command
 kubectl explain pods --recursive
 kubectl -n mynamespace get pod ubuntu-sleeper -o yaml
@@ -925,7 +924,7 @@ kubectl apply -f webapp-color.yaml
 
 `kubectl -n mynamespace get pod ubuntu-sleeper -o yaml`
 
-```
+```yml
 apiVersion: v1
 kind: Pod
 metadata:
@@ -1084,7 +1083,7 @@ status:
 
 `ubuntu-sleeper-1.yaml`
 
-```
+```yml
 apiVersion: v1
 kind: Pod
 metadata:
@@ -1100,7 +1099,7 @@ spec:
 
 `webapp-color.yaml`
 
-```
+```yml
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -1112,7 +1111,7 @@ data:
 
 `webapp-pod.yaml`
 
-```
+```yml
 apiVersion: v1
 kind: Pod
 metadata:
@@ -1139,13 +1138,13 @@ spec:
 
 Secrets
 
-```
+```shell
 # The root password will be "KubernetesRocks!"
 $ echo -n 'KubernetesRocks!' | base64
 S3ViZXJuZXRlc1JvY2tzIQ==
 ```
 
-```
+```yml
 apiVersion: v1
 kind: Secret
 metadata:
@@ -1155,12 +1154,12 @@ data:
   password: S3ViZXJuZXRlc1JvY2tzIQ==
 ```
 
-```
+```shell
 $ kubectl apply -f mysql-secret.yaml
 secret/mariadb-root-password created
 ```
 
-```
+```shell
 echo -n 'sql01Secret!' | base64
 echo -n 'rootSecret!' | base64
 echo -n 'password123!' | base64
@@ -1168,7 +1167,7 @@ echo -n 'password123!' | base64
 
 `db-secret.yaml`
 
-```
+```yml
 apiVersion: v1
 kind: Secret
 metadata:
@@ -1212,7 +1211,7 @@ ConfigMap 对象
 
 第四种方法意味着你必须编写代码才能读取 ConfigMap 和它的数据。然而， 由于你是直接使用 Kubernetes API，因此只要 ConfigMap 发生更改， 你的应用就能够通过订阅来获取更新，并且在这样的情况发生的时候做出反应。 通过直接进入 Kubernetes API，这个技术也可以让你能够获取到不同的名字空间里的 ConfigMap。
 
-```
+```shell
 # Create a kustomization.yaml file with ConfigMapGenerator
 cat <<EOF >./kustomization.yaml
 configMapGenerator:
@@ -1222,7 +1221,7 @@ configMapGenerator:
 EOF
 ```
 
-```
+```yml
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -1252,7 +1251,7 @@ data:
 
 ![](image/README/20220421_04.png)
 
-```
+```md
 kubectl -n mynamespace create cm webapp-config-map --from-literal=APP_COLOR=darkblue
 
 Please refer to week27-20220421-ConfigmapSecrets/labs/8-webapp-config-map.yaml
@@ -1278,21 +1277,21 @@ There are three ways you can create a pod (or resources) in a running k8s cluste
 
 - Imperative way
 
-```
+```md
 $ kubectl run --generator=run-pod/v1 nginx --image=nginx
 pod/nginx created
 ```
 
 - Declarative way
 
-```
+```md
 $ kubectl create -f simple_deployment.yaml
 deployment.apps/nginx-deployment created
 ```
 
 pod_test2_1.yaml
 
-```
+```yml
 apiVersion: v1
 kind: Pod
 metadata:
@@ -1309,7 +1308,7 @@ spec:
 
 pod_test2_2.yaml
 
-```
+```yml
 apiVersion: v1
 kind: Pod
 metadata:
@@ -1326,7 +1325,7 @@ spec:
 
 - Using an API interface
 
-```
+```shell
 kubectl exec -it test1 -n mynamespace -- bash
 ```
 
@@ -1334,29 +1333,29 @@ kubectl exec -it test1 -n mynamespace -- bash
 
 `spec.containers.resources.limits.memory`
 
-```
+```shell
 kubectl delete pod test4 -n mynamespace
 
 kubectl apply -f test4-pod.yaml
 ```
 
-```
+```shell
 kubectl get sa -n default
 ```
 
-```
+```shell
 controlplane $ kubectl taint nodes node01 spray=morxtein:NoSchedule
 node/node01 tainted
 ```
 
-```
+```shell
 kubectl run test5 --image=nginx -n mynamespace
 kubectl get pods -n mynamespace
 ```
 
 test6.yaml
 
-```
+```yml
 apiVersion: v1
 kind: Pod
 metadata:
@@ -1373,12 +1372,12 @@ spec:
     effect: "NoSchedule"
 ```
 
-```
+```shell
 kubectl apply -f test6.yaml
 kubectl get pods -n mynamespace
 ```
 
-```
+```shell
 kubectl label node node01 color=blue
 ```
 
@@ -1504,5 +1503,3 @@ kubectl -n mynamespace top pod
 <https://docs.google.com/forms/d/e/1FAIpQLSeSrGJTolsj2dO8Q-Xu0uKn1QW3Dr9QHw0vVEjhxTa-sWsLiA/viewscore?viewscore=AE0zAgBLjjH1i67JJiUBIuaqLGzzgkAsGQe8dpkWMo_Qk5dZBzzfw3VER7ixsYmigHiGw0s>
 
 ![](image/README/20220xxx_01.png)
-
-## Ref
